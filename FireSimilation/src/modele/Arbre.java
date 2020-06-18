@@ -1,23 +1,40 @@
 package modele;
+import java.awt.Color;
 
-public class Arbre {
-	public int couleur;
-	public int coordX;
-	public int coordY;
+
+
+public class Arbre{
 	
-	public void arbre(int coordX,int coordY, int couleur) {
-		this.coordX = coordX;
-		this.coordY = coordY;
-		this.couleur = couleur;
+	public  static final Color arbre = Color.GREEN;
+	public  static final Color rien = Color.WHITE;
+	public  static final Color enFeu = Color.RED;
+	public  static final Color brule = Color.GRAY;
+//	public int coordX;
+//	public int coordY;
+	
+	public Arbre() {
 		}
-		
-	public void setCouleur(int x, int y) {
-		int i,j;
-		int pas = 4;
-		for(i = 0; i < pas; i++) for(j = 0; j < pas; j++) {
-			putpixel(pas*x+i,pas*y+j,couleur[color]);
-		}
-	} 
+	
+//	public int getX() {
+//		return this.coordX;
+//	}
+//	public int getY() {
+//		return this.coordY;
+//	}
+	public static Color getColor(int i) {
+		 if(i == 0) {
+	        	return rien;
+	        	}
+	        if(i == 1) {
+	        	return arbre;
+	        	}
+	        if(i == 2) {
+	        	return enFeu;}
+	        else {
+	        	return brule;
+	        }
+	}
+
 
 	
 

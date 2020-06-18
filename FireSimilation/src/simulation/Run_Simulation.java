@@ -1,7 +1,5 @@
 package simulation;
 
-import javax.swing.JTextField;
-
 import modele.Foret;
 
 public class Run_Simulation {
@@ -9,12 +7,25 @@ public class Run_Simulation {
 	public static int nbArbreenFlamme;
 	public static int taille;
 	public float densite;
-//	public Foret foret;
+	public Foret foret;
 	
-	public Run_Simulation(float densite) {
+	public Run_Simulation(float densite, int nbArbreenFlamme) {
 		this.densite = densite;
-		Foret foret = new Foret(0, densite);
+		this.foret = new Foret(0, densite);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	public static void main(String[] args) {	
 //		 foret();
 //		 miseafeu(); nombreetapes=0; /* la variable nombeetapes permet de connaître le temps jusqu’à
