@@ -1,18 +1,43 @@
 package simulation;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EventListener;
+
 import modele.Foret;
 
-public class Run_Simulation {
+public class Run_Simulation{
 	
 	public static int nbArbreenFlamme;
 	public static int taille;
 	public float densite;
 	public Foret foret;
+	public Fenetre
 	
-	public Run_Simulation(float densite, int nbArbreenFlamme) {
-		this.densite = densite;
-		this.foret = new Foret(0, densite);
+	@Override
+	public void actionPerformed(ActionEvent event){		
+		if (event.getSource().equals(this.demarrer)) {
+			int nbArbreflamme = foret.getnbArbreenFlamme();
+			if(Feu.stop_feu(nbArbreflamme()))
+				 new Thread(new Runnable() {
+			     public void run() {				    	  
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								etiquette_erreur.setVisible(false);
+					          }	}			        	
+				          );
+				}).start();}	
+				 
+				 new Propagation(this.foret);
+				 this.grille = new Grille(foret);
+				 nombreetapes++; 
+			 
 	}
+		}
+			 
+		
+	}
+}
 	
 	
 	
@@ -34,10 +59,7 @@ public class Run_Simulation {
 //		 while(nbarbresenfeu!=0); 
 //
 //	}
-//	
-//	public drawGrille(Foret foret) {
-//		
-//	}
+
 }
 	
 
