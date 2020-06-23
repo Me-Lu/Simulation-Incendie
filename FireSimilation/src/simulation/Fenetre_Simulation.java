@@ -1,10 +1,10 @@
 package simulation;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -12,21 +12,53 @@ import modele.Feu;
 import modele.Foret;
 import modele.Propagation;
 
+/**
+ * Cette classe gère l'affichage de la simulation
+ * @author Melvin
+ *
+ */
+
 public class Fenetre_Simulation extends JFrame implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Contient le bouton qui lance la simulation.
+	 */
 	public JButton demarrer;
-	public JPanel grille;
-	public static int nbArbreflamme;
-	public Foret foret;
+	
+	/**
+	 * Contient la grille de la forêt
+	 * @see Grille
+	 */
+	public static Grille grille;
+	
+	/**
+	 * Compteur du nombre d'étapes de la simulation
+	 */
 	public int nombreetapes = 0;
+	
+	/**
+	 * Indicateur de transition.
+	 */
+	public static Boolean lancer_simu = false;
 
 	
+	/**
+	 * Constructeur Fenetre_Simulation
+	 */
 	public Fenetre_Simulation() {
 		super();
 		propriete_fenetre();
 	}
 	
+	/**
+	 * Définit les propriétés de la fenêtre.
+	 * Initialise la forêt et la grille.
+	 * 
+	 * @see Foret
+	 * @see Feu
+	 * @see Grille
+	 */
 	public void propriete_fenetre() {
 		this.setTitle("Simulation de feu de forêt");
 		this.setSize(600,660);
@@ -37,9 +69,9 @@ public class Fenetre_Simulation extends JFrame implements ActionListener{
 		this.setLayout(null);		
 		
 		JTextField densite = Conteneur_Fenetre_initiale.densite;
-		Foret foret = new Foret(0, Float.parseFloat(densite.getText()));
-		Feu.init_Feu(foret);
-		grille = new Grille(foret);
+		Foret foret = new Foret(Float.parseFloat(densite.getText()));
+		Foret.setForet(Feu.init_Feu(foret));
+		grille = new Grille();
 		grille.setBounds(10, 10, 560, 560);
 		this.add(grille);
 		
@@ -54,32 +86,49 @@ public class Fenetre_Simulation extends JFrame implements ActionListener{
 		this.setVisible(true);
 		}
 	
+	/**
+	 * Retourne un indicateur de lancement de la simulation propre.
+	 * @return Indicateur
+	 * 					Indicateur de lancement des itérations.
+	 */
+	public static Boolean getReady() {
+		return lancer_simu;
+	}
+	
+	/**
+	 * Ecouteur de l'évènement "clic" sur le bouton démarrer, et lance la propagation du feu.
+	 * @see dmarrer
+	 * @see Propagation
+	 * @see Feu
+	 * @see Foret
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event){	
 		if (event.getSource().equals(demarrer)){
-			int nbArbreflamme = foret.getnbArbreenFlamme();
-			do {
-				
+			int nbArbreflamme;
+			do {			
+				nbArbreflamme = Foret.getnbArbreenFlamme();
+				try { Thread.sleep( 200 );} // Pause de 20ms entre chaque déplacement
+				catch( Exception e ) {}
 				new Thread(new Runnable(){
-				     public void run() {
-				    	 new Propagation(foret);
-				    	 
-				    	 SwingUtilities.invokeLater(new Runnable() {
-				    		 public void run() {
-					    		 grille = new Grille(foret);
-				    		 }
-				    	 });
-				    }       
-				}).start();
-			this.add(grille);
-			grille.setVisible(true);
+					public void run() {
+							Propagation.propagation(Foret.getForet());
+				    		SwingUtilities.invokeLater(new Runnable() {
+				    		 	public void run() {
+				    		 		grille.revalidate();
+					 			}
+				    	 	});
+							}       
+						}).start();
+		    System.out.println(nbArbreflamme);
 			this.repaint();
-			this.setVisible(true);
-			System.out.println(nbArbreflamme);
 			}while(Feu.stop_Feu(nbArbreflamme));
-		}
-				 
+			System.out.println("End");
+		}			 
 	}
+	
+
+	
 }
 	
 

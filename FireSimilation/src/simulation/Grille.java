@@ -8,27 +8,46 @@ import javax.swing.JPanel;
 import modele.Arbre;
 import modele.Foret;
 
+/**
+ * Grille est la classe qui gère le contenu de la grille
+ * 
+ * @author Melvin
+ */
+
 public class Grille extends JPanel{
 
 
 	private static final long serialVersionUID = 8510386589653053710L;
-	public  Foret foret;
+	
+	/**
+	 * Nombre de pixels dédiés à un arbre.
+	 * @see Arbre
+	 */
 	static final int pas = 4;
-	public Arbre arbre;
 
 	
-	public Grille(Foret foret) {
-		this.foret = foret;
-//		this.setSize(560,560);
+	/**
+     * Constructeur Grille.
+     * 
+     *            Construteur de l'objet Grille.
+     */
+	public Grille() {
 		this.setLayout(new FlowLayout());
 		this.setVisible(true);
 	}
+	
+	/**
+	 * Paint l'objet Grille avec le tableau de Foret
+	 * @param Element Graphique
+	 * @see Foret#grille_foret
+	 * @see Arbre#getColor(int)
+	 * 
+	 */
 	@Override
-    public void paint(Graphics g1){ 
-		super.paint(g1);
+    public void paintComponent(Graphics g1){ 
+		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D) g1;
-    	Foret foret = this.foret;
-    	int [][] tableau_foret = foret.grille_foret;
+    	int [][] tableau_foret = Foret.grille_foret;
         int coordX = 0;
         int coordY = 0;
         for (coordX = 0; coordX < 140; coordX ++) {
